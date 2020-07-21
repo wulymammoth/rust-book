@@ -10,13 +10,10 @@ fn main() {
 // return index of the end of the word
 fn first_word(s: &String) -> &str {
     let bytes = s.as_bytes();
-    // enumerate is similar to Python's here that returns a tuple with index and a ref to the the
-    // element
     for (i, &item) in bytes.iter().enumerate() {
-        if item == b' ' { // checking for space char
-            return i;
+        if item == b' ' {
+            return &s[..i];
         }
     }
-
-    s.len()
+    &s[..]
 }
