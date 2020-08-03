@@ -23,7 +23,10 @@ fn main() {
 
     let v = vec![1, 2, 3, 4, 5, 6];
     let does_not_exist = v.get(100);
-    println!("attempting to access the 100th indexed value {:?}", does_not_exist);
+    println!(
+        "attempting to access the 100th indexed value {:?}",
+        does_not_exist
+    );
 
     // results in panic
     //let does_not_exist = &v[100];
@@ -59,6 +62,17 @@ fn main() {
     let mut s1 = String::from("foo");
     s1.push('l'); // single quote
     println!("{}", s1); // "fool"
+
+    delimit("concatenation with the + operator or the format! macro");
+    let s1 = String::from("Hello, ");
+    let s2 = String::from("word!");
+    let s3 = s1 + &s2;
+    println!("concatenation using + (with s1 moved): {}", s3);
+
+    delimit("string slicing (avoid indexing into string)");
+    let hello = "Здравствуйте";
+    let s = &hello[0..4];
+    println!("s: {}", s); // Зд (because each of those chars is two bytes)
 }
 
 fn delimit(msg: &str) {
