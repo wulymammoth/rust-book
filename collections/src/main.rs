@@ -73,6 +73,49 @@ fn main() {
     let hello = "Здравствуйте";
     let s = &hello[0..4];
     println!("s: {}", s); // Зд (because each of those chars is two bytes)
+
+    delimit("### hash maps ###");
+    delimit("creating a new hash map");
+    use std::collections::HashMap;
+    let mut scores = HashMap::new();
+    scores.insert(String::from("blue"), 10);
+    scores.insert(String::from("yellow"), 50);
+    println!("current scores: {:#?}", scores);
+
+    delimit("construct hash map from vector");
+    let teams = vec![String::from("blue"), String::from("yellow")];
+    let initial_scores = vec![10, 50];
+    // `collect` can collect into any number of dat structures, so a type annotation is needed here
+    let scores: HashMap<_, _> = teams.into_iter().zip(initial_scores.into_iter()).collect();
+    println!("current scores: {:#?}", scores);
+
+    delimit("ownership");
+    delimit("values that implement the `Copy` trait are copied");
+    let field_name = String::from("favorite color");
+    let field_value = String::from("blue");
+    let mut map = HashMap::new();
+    map.insert(field_name, field_value);
+    println!("map: {:#?}", map);
+    delimit("values that don't implement the `Copy` trait are moved");
+
+    delimit("accessing values in a hash map");
+    let mut scores = HashMap::new();
+    scores.insert(String::from("blue"), 10);
+    scores.insert(String::from("yellow"), 50);
+    let team_name = String::from("blue");
+    println!("team score: {}", scores.get(&team_name).unwrap());
+
+    delimit("iterating over the key-value pairs");
+    for (team, score) in &scores {
+        println!("team {}: {}", team, score);
+    }
+
+    delimit("updating a map");
+    println!("overwrite an existing value");
+    scores.insert(String::from("blue"), 10);
+    scores.insert(String::from("blue"), 25);
+    let team = String::from("blue");
+    println!("should be 25: {}", scores.get(&team).unwrap());
 }
 
 fn delimit(msg: &str) {
