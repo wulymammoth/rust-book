@@ -115,7 +115,25 @@ fn main() {
     scores.insert(String::from("blue"), 10);
     scores.insert(String::from("blue"), 25);
     let team = String::from("blue");
-    println!("should be 25: {}", scores.get(&team).unwrap());
+    println!(
+        "overwriting an existing value: {}",
+        scores.get(&team).unwrap()
+    );
+
+    delimit("inserting a value only if key doesn't already exist using `or_insert`");
+    scores = HashMap::new();
+    scores.insert(String::from("blue"), 10);
+    scores.entry(String::from("yellow")).or_insert(50);
+    scores.entry(String::from("blue")).or_insert(50);
+    println!("{:?}", scores);
+
+    delimit("updating a value based on old value");
+    let text = "hello world wonderful world";
+    let mut map = HashMap::new();
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
 }
 
 fn delimit(msg: &str) {
