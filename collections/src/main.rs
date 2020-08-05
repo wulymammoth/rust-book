@@ -1,3 +1,5 @@
+use exercises;
+
 fn main() {
     delimit("creating a new vector (rare)");
     let v: Vec<i32> = Vec::new();
