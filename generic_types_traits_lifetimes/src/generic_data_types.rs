@@ -24,19 +24,24 @@ fn largest_char(list: &[char]) -> char {
     largest
 }
 
-//fn gen_largest<T>(list: &[T]) -> T {
-//let mut largest = list[0];
-//for &item in list {
-//// note: `T` might need a bound for `std::cmp::PartialOrd`
-//// - this means that it can't possibly work for all possible types of T
-//// - can only use types whose values can be ordered
-//// - will need to either limit the types or use "traits as parameters"
-//if item > largest {
-//largest = item;
-//}
-//}
-//largest
-//}
+fn gen_largest<T: PartialOrd + Copy + std::cmp::Ord>(list: &[T]) -> T {
+    let mut largest = list[0];
+    for &item in list {
+        largest = max(largest, item);
+    }
+    largest
+}
+
+fn gen_largest_too<T>(list: &[T]) -> T
+where
+    T: PartialOrd + Copy + std::cmp::Ord,
+{
+    let mut largest = list[0];
+    for &item in list {
+        largest = max(largest, item);
+    }
+    largest
+}
 
 #[derive(Debug)]
 struct Point<T> {
@@ -121,4 +126,18 @@ pub fn gen_data_types() {
     let p2 = Pnt { x: "Hello", y: 'c' };
     let p3 = p1.mixup(p2);
     println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
+
+    // largest using generics
+    println!(
+        "generic function largest int: {}",
+        gen_largest(&number_list)
+    );
+    println!("generic function largest char: {}", gen_largest(&char_list));
+
+    // largest using generics
+    println!(
+        "generic function largest int: {}",
+        gen_largest_too(&number_list)
+    );
+    println!("generic function largest char: {}", gen_largest_too(&char_list));
 }
