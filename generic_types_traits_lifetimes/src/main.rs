@@ -1,4 +1,5 @@
 mod generic_data_types;
+mod lifetimes;
 mod traits;
 
 fn main() {
@@ -11,4 +12,7 @@ fn main() {
 
     println!("--- 10.2 traits: defining shared behavior ---\n");
     traits::shared_behavior();
+
+    println!("--- 10.3 validating references with lifetimes\n");
+    lifetimes::lifetimes();
 }
