@@ -11,7 +11,11 @@ impl Rectangle {
 }
 
 pub fn add_two(a: i32) -> i32 {
-    a + 2
+    internal_adder(a, 2)
+}
+
+fn internal_adder(a: i32, b: i32) -> i32 {
+    a + b
 }
 
 pub fn greeting(name: &str) -> String {
@@ -129,5 +133,10 @@ mod tests {
     #[test]
     fn one_hundred() {
         assert_eq!(102, add_two(100));
+    }
+
+    #[test]
+    fn internal() { // we can test private functions/methods
+        assert_eq!(4, internal_adder(2, 2));
     }
 }
