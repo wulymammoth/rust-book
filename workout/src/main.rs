@@ -57,12 +57,24 @@ fn closure() {
     assert!(equal_to_x(y));
 }
 
+fn move_closure() {
+    let x = vec![1, 2, 3];
+    let equal_to_x = move |z| z == x;
+    //println!("can't use x here: {:?}", x);
+    let y = vec![1, 2, 3];
+    assert!(equal_to_x(y));
+}
+
 fn main() {
     let simulated_user_specified_value = 10;
     let simulated_random_number = 7;
     generate_workout(simulated_user_specified_value, simulated_random_number);
+
     println!("closure example - captures its environment");
-    closure()
+    closure();
+
+    println!("move closure example");
+    move_closure();
 }
 
 #[cfg(test)]
