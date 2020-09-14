@@ -132,11 +132,8 @@ mod tests {
     fn methods_producing_other_iterators() {
         let v1: Vec<i32> = vec![1, 2, 3];
         // NOTE: .map creates a new iterator
-        let mut mapped = v1.iter().map(|x| x + 1);
+        let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
 
-        assert_eq!(mapped.next(), Some(2));
-        assert_eq!(mapped.next(), Some(3));
-        assert_eq!(mapped.next(), Some(4));
-        assert_eq!(mapped.next(), None);
+        assert_eq!(v2, vec![2, 3, 4]);
     }
 }
