@@ -116,4 +116,27 @@ mod tests {
         assert_eq!(v1_iter.next(), Some(&3));
         assert_eq!(v1_iter.next(), None);
     }
+
+    #[test]
+    fn iterator_sum() {
+        let v1 = vec![1, 2, 3];
+        let v1_iter = v1.iter();
+        // NOTE: methods that call `next` are "consuming adaptors"
+        // because they use up the iterator
+        let total: i32 = v1_iter.sum(); // .sum is a consuming adaptor
+
+        assert_eq!(total, 6);
+    }
+
+    #[test]
+    fn methods_producing_other_iterators() {
+        let v1: Vec<i32> = vec![1, 2, 3];
+        // NOTE: .map creates a new iterator
+        let mut mapped = v1.iter().map(|x| x + 1);
+
+        assert_eq!(mapped.next(), Some(2));
+        assert_eq!(mapped.next(), Some(3));
+        assert_eq!(mapped.next(), Some(4));
+        assert_eq!(mapped.next(), None);
+    }
 }
