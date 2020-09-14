@@ -50,10 +50,19 @@ fn generate_workout(intensity: u32, random_number: u32) {
     }
 }
 
+fn closure() {
+    let x = 4;
+    let equal_to_x = |z| z == x; // captures (dynamic) environment
+    let y = 4;
+    assert!(equal_to_x(y));
+}
+
 fn main() {
     let simulated_user_specified_value = 10;
     let simulated_random_number = 7;
     generate_workout(simulated_user_specified_value, simulated_random_number);
+    println!("closure example - captures its environment");
+    closure()
 }
 
 #[cfg(test)]
