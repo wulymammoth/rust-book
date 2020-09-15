@@ -1,4 +1,4 @@
-use std::{error::Error, env, fs};
+use std::{env, error::Error, fs};
 
 // Box<dyn Error> is a trait object (`dyn` is short for "dynamic")
 // - simply means that function will return a type that implements the `Error` trait
@@ -22,17 +22,19 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
-        // error-handling
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
-
-        // we are trading performance for simplicity here when we use clone
-        // we are avoiding lifetime annotations
-        let program_name = args[0].clone();
-        let query = args[1].clone();
-        let filename = args[2].clone();
+    pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
+        let program_name = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a program name"),
+        };
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file name"),
+        };
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config {
