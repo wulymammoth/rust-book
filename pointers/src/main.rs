@@ -25,6 +25,7 @@ fn references() {
 /// - `Ref<T>`
 /// - `RefMut<T>` and accessed through `RefCell<T>`
 
+#[allow(dead_code)]
 fn smart_pointers() {}
 
 /// Box Pointers
@@ -52,10 +53,42 @@ fn box_pointers() {
 
     use List::{Cons, Nil};
 
+    #[allow(unused_variables)]
     let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
+}
+
+/// dereference pointer (*) allows us to follow the pointer to the data
+fn dereference() {
+    println!("--- DEREF TRAIT ---");
+    let x = 5;
+    let y = MyBox::new(x); // setting `y` to a reference of `x`
+
+    assert_eq!(5, x);
+    // because y is a reference to a reference, we need to follow it to obtain the value
+    assert_eq!(5, *y); // * is a call to the `deref` method
+}
+
+/// defining our own smart pointer
+struct MyBox<T>(T);
+
+impl<T> MyBox<T> {
+    fn new(x: T) -> MyBox<T> {
+        MyBox(x)
+    }
+}
+
+use std::ops::Deref;
+
+impl<T> Deref for MyBox<T> {
+    type Target = T; // defines associated type for `Deref` trait to use
+
+    fn deref(&self) -> &T {
+        &self.0 // this avoids moving the value out of self by returning a reference
+    }
 }
 
 fn main() {
     references();
     box_pointers();
+    dereference();
 }
