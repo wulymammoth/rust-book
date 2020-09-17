@@ -87,8 +87,21 @@ impl<T> Deref for MyBox<T> {
     }
 }
 
+/// deref coercion
+fn hello(name: &str) {
+    println!("Hello, {}!", name);
+}
+
 fn main() {
     references();
     box_pointers();
     dereference();
+
+    // deref coercion with MyBox
+    let m = MyBox::new(String::from("Rust"));
+    hello(&m); // deref coercion saves us from having to write...
+    // hello(&(*m)[..]);
+    // - the (*m) does the deref into MyBox<String> and into String
+    // - the & and [..] take a string slice of the String that is equal to the entire string to
+    // match the signature of hello
 }
