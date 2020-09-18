@@ -92,6 +92,11 @@ fn hello(name: &str) {
     println!("Hello, {}!", name);
 }
 
+mod drop;
+use drop::CustomSmartPointer;
+
+//pub use crate::drop;
+
 fn main() {
     references();
     box_pointers();
@@ -100,8 +105,18 @@ fn main() {
     // deref coercion with MyBox
     let m = MyBox::new(String::from("Rust"));
     hello(&m); // deref coercion saves us from having to write...
-    // hello(&(*m)[..]);
-    // - the (*m) does the deref into MyBox<String> and into String
-    // - the & and [..] take a string slice of the String that is equal to the entire string to
-    // match the signature of hello
+               // hello(&(*m)[..]);
+               // - the (*m) does the deref into MyBox<String> and into String
+               // - the & and [..] take a string slice of the String that is equal to the entire string to
+               // match the signature of hello
+
+    #[allow(unused_variables)]
+    let c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    };
+    #[allow(unused_variables)]
+    let d = CustomSmartPointer {
+        data: String::from("other stuff"),
+    };
+    println!("CustomSmartPointers created.");
 }
