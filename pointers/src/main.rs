@@ -95,7 +95,26 @@ fn hello(name: &str) {
 mod drop;
 use drop::CustomSmartPointer;
 
-//pub use crate::drop;
+fn drops() {
+    #[allow(unused_variables)]
+    let c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    };
+    #[allow(unused_variables)]
+    let d = CustomSmartPointer {
+        data: String::from("other stuff"),
+    };
+    println!("CustomSmartPointers created.\n");
+
+    println!("--- DROP EXAMPLE ---");
+    // drop example
+    let c2 = CustomSmartPointer {
+        data: String::from("some data"),
+    };
+    println!("CustomSmartPointer created");
+    drop(c2);
+    println!("CustomSmartPointer dropped before the end of main.");
+}
 
 fn main() {
     references();
@@ -110,13 +129,5 @@ fn main() {
                // - the & and [..] take a string slice of the String that is equal to the entire string to
                // match the signature of hello
 
-    #[allow(unused_variables)]
-    let c = CustomSmartPointer {
-        data: String::from("my stuff"),
-    };
-    #[allow(unused_variables)]
-    let d = CustomSmartPointer {
-        data: String::from("other stuff"),
-    };
-    println!("CustomSmartPointers created.");
+    drops();
 }
