@@ -148,6 +148,8 @@ fn multiple_ownership() {
     println!("count after c goes out of scope = {}", Rc::strong_count(&a));
 }
 
+mod ref_cell;
+
 fn main() {
     references();
     box_pointers();
