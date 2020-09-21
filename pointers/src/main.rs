@@ -116,11 +116,42 @@ fn drops() {
     println!("CustomSmartPointer dropped before the end of main.");
 }
 
+/// Rc<T>, the reference counted smart pointer
+///
+/// - primary use to share data
+/// - e.g. graph node with many in-degrees
+///
+/// NOTE: use in only single-threaded scenarios; diff method for ref-counting in concurrent programs
+fn multiple_ownership() {
+    println!("\n--- multiple ownership with Rc<T>");
+    enum List {
+        Cons(i32, Rc<List>),
+        Nil,
+    }
+
+    use std::rc::Rc;
+    use List::{Cons, Nil};
+
+    // b -> 3 -> \
+    //            \
+    //        a -> 5 -> 10 -> Nil
+    //            /
+    // c -> 4 -> /
+    let a = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(Nil)))));
+    println!("count after create a = {}", Rc::strong_count(&a));
+    let _b = Cons(3, Rc::clone(&a));
+    println!("count after create b = {}", Rc::strong_count(&a));
+    {
+        let _c = Cons(4, Rc::clone(&a));
+        println!("count after create c = {}", Rc::strong_count(&a));
+    }
+    println!("count after c goes out of scope = {}", Rc::strong_count(&a));
+}
+
 fn main() {
     references();
     box_pointers();
     dereference();
-
     // deref coercion with MyBox
     let m = MyBox::new(String::from("Rust"));
     hello(&m); // deref coercion saves us from having to write...
@@ -128,6 +159,6 @@ fn main() {
                // - the (*m) does the deref into MyBox<String> and into String
                // - the & and [..] take a string slice of the String that is equal to the entire string to
                // match the signature of hello
-
     drops();
+    multiple_ownership();
 }
