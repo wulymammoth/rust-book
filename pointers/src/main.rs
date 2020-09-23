@@ -151,6 +151,7 @@ fn multiple_ownership() {
 mod ref_cell;
 mod multiple_ownership;
 mod ref_cycles_mem_leak;
+mod ref_bidirectional_tree;
 
 fn main() {
     references();
@@ -167,4 +168,5 @@ fn main() {
     multiple_ownership();
     multiple_ownership::main();
     ref_cycles_mem_leak::main();
+    ref_bidirectional_tree::main();
 }
