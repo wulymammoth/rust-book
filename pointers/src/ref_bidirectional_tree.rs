@@ -16,13 +16,41 @@ pub fn main() {
         children: RefCell::new(vec![]),
     });
 
-    let root = Rc::new(Node {
-        value: 5,
-        parent: RefCell::new(Weak::new()),
-        children: RefCell::new(vec![Rc::clone(&leaf)]),
-    });
+    println!(
+        "leaf strong = {}, weak = {}",
+        Rc::strong_count(&leaf),
+        Rc::weak_count(&leaf),
+    );
 
-    *leaf.parent.borrow_mut() = Rc::downgrade(&root);
+    {
+        let root = Rc::new(Node {
+            value: 5,
+            parent: RefCell::new(Weak::new()),
+            children: RefCell::new(vec![Rc::clone(&leaf)]),
+        });
+
+        *leaf.parent.borrow_mut() = Rc::downgrade(&root);
+
+        println!(
+            "branch strong = {}, weak = {}",
+            Rc::strong_count(&root),
+            Rc::weak_count(&root),
+        );
+
+        println!(
+            "leaf strong = {}, weak = {}",
+            Rc::strong_count(&leaf),
+            Rc::weak_count(&leaf),
+        );
+    }
+    println!("### inner scope brace ends");
 
     println!("leaf parent = {:#?}", leaf.parent.borrow().upgrade());
+    println!(
+        "leaf strong = {}, weak = {}",
+        Rc::strong_count(&leaf),
+        Rc::weak_count(&leaf),
+    );
+
+    println!("### the leaf's parent (root) has been freed, leaving just the leaf by itself as a single strong ref");
 }
