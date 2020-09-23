@@ -150,6 +150,7 @@ fn multiple_ownership() {
 
 mod ref_cell;
 mod multiple_ownership;
+mod ref_cycles_mem_leak;
 
 fn main() {
     references();
@@ -165,4 +166,5 @@ fn main() {
     drops();
     multiple_ownership();
     multiple_ownership::main();
+    ref_cycles_mem_leak::main();
 }
