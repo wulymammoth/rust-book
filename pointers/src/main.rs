@@ -149,6 +149,7 @@ fn multiple_ownership() {
 }
 
 mod ref_cell;
+mod multiple_ownership;
 
 fn main() {
     references();
@@ -163,4 +164,5 @@ fn main() {
                // match the signature of hello
     drops();
     multiple_ownership();
+    multiple_ownership::main();
 }
