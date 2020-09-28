@@ -34,7 +34,7 @@ fn multiple_values_and_waiting_receiver() {
         for val in vals {
             tx.send(val).unwrap();
             // this causes the receive to wait
-            thread::sleep(Duration::from_secs(1));
+            thread::sleep(Duration::from_millis(500));
         }
     });
 
