@@ -2,6 +2,7 @@ use std::{thread, time::Duration};
 
 mod closures_with_threads;
 mod message_passing;
+mod multiple_producers_via_transmitter_clone;
 
 fn main() {
     let handle = thread::spawn(|| { // returns a `JoinHandle`
@@ -26,4 +27,5 @@ fn main() {
 
     closures_with_threads::main();
     message_passing::main();
+    multiple_producers_via_transmitter_clone::main();
 }
