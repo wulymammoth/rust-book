@@ -1,6 +1,7 @@
 use std::{thread, time::Duration};
 
 mod closures_with_threads;
+mod message_passing;
 
 fn main() {
     let handle = thread::spawn(|| { // returns a `JoinHandle`
@@ -24,4 +25,5 @@ fn main() {
     handle.join().unwrap();
 
     closures_with_threads::main();
+    message_passing::main();
 }
