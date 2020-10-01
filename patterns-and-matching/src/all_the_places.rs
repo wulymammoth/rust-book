@@ -13,13 +13,14 @@ fn if_let_expressions() {
     let favorite_color: Option<&str> = None;
     let is_tuesday = false;
     let age: Result<u8, _> = "34".parse(); // parses a string into a unsized 8-bit integer
-    // NOTE: big downside of `if let` expressions is that the compiler doesn't check exhaustiveness
-    // compiler can't alert us of a possible logic bug, i.e., missing the last `else` block
+                                           // NOTE: big downside of `if let` expressions is that the compiler doesn't check exhaustiveness
+                                           // compiler can't alert us of a possible logic bug, i.e., missing the last `else` block
     if let Some(color) = favorite_color {
         println!("Using your favorite color, {}, as the background", color);
     } else if is_tuesday {
         println!("Tuesday is green day!");
-    } else if let Ok(age) = age { // introduces new shadowed `age` variable
+    } else if let Ok(age) = age {
+        // introduces new shadowed `age` variable
         if age > 30 {
             println!("Using purple as the background color");
         } else {
