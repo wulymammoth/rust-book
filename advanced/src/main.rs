@@ -1,6 +1,6 @@
-use advanced::unsafe_rust;
+mod unsafe_rust;
 
 fn main() {
     println!("===== 19. advanced features ======\n");
-    unsafe_rust();
+    unsafe_rust::main();
 }
