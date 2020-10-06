@@ -2,6 +2,69 @@ pub fn main() {
     println!("\n-- 19.2 advanced traits\n");
     specifying_placeholder_types_in_trait_defs_with_associated_types();
     default_generic_type_parameters_and_operator_overloading();
+    fully_qualified_syntax_for_disambiguation();
+}
+
+/// fully qualified syntax for disambiguation: calling methods with the same name
+fn fully_qualified_syntax_for_disambiguation() {
+    trait Pilot {
+        fn fly(&self);
+    }
+
+    trait Wizard {
+        fn fly(&self);
+    }
+
+    struct Human;
+
+    impl Pilot for Human {
+        fn fly(&self) {
+            println!("This is your captain speaking.");
+        }
+    }
+
+    impl Wizard for Human {
+        fn fly(&self) {
+            println!("Up!");
+        }
+    }
+
+    impl Human {
+        fn fly(&self) {
+            println!("*flapping arms furiously*");
+        }
+    }
+
+    let person = Human;
+    // specifying trait name specifies which implementation we want
+    Pilot::fly(&person);
+    Wizard::fly(&person);
+    person.fly(); // Human::fly
+
+    // NOTE: associated functions that are a part of traits don't have a `self` parameter
+    println!("\n- trait associated functions\n");
+    trait Animal {
+        fn baby_name() -> String; // associated function (no self)
+    }
+
+    struct Dog;
+
+    #[allow(dead_code)]
+    impl Dog {
+        fn baby_name() -> String {
+            String::from("Spot")
+        }
+    }
+
+    impl Animal for Dog {
+        fn baby_name() -> String {
+            String::from("puppy")
+        }
+    }
+
+    // use of fully-qualified name for an associated function with no self param
+    // NOTE: no receiver for associated functions, only other arguments
+    println!("A baby dog is called a {}", <Dog as Animal>::baby_name());
 }
 
 fn default_generic_type_parameters_and_operator_overloading() {
