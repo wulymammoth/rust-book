@@ -3,6 +3,62 @@ pub fn main() {
     specifying_placeholder_types_in_trait_defs_with_associated_types();
     default_generic_type_parameters_and_operator_overloading();
     fully_qualified_syntax_for_disambiguation();
+    supertraits_to_inception_traits();
+    newtype_pattern_for_ext_traits_on_ext_types();
+}
+
+/// "newtype" is a term that originates from Haskell
+/// - the wrapper type is "elided" at compile time
+fn newtype_pattern_for_ext_traits_on_ext_types() {
+    println!("\n- using the newtype pattern to implement external traints on external types\n");
+    // EXAMPLE:
+    // - we want to implement Display on Vec<T>
+    //   - orphan rule prevents us from doing directly because the Display trait and Vec<T> are
+    //   defined outside of our crate
+    // - we can instead, make a Wrapper struct that holds an instance of Vec<T>
+    // - then we implement Display on the Wrapper and use the Vec<T> value
+    use std::fmt;
+
+    struct Wrapper(Vec<String>);
+
+    impl fmt::Display for Wrapper {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "[{}]", self.0.join(", ")) // Vec<T> is the item at index zero (in the tuple)
+        }
+    }
+
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+    println!("w = {}", w);
+}
+
+fn supertraits_to_inception_traits() {
+    println!("\n- using supertraits to require one trait's functionality within another trait\n");
+
+    use std::fmt;
+
+    trait OutlinePrint: fmt::Display {
+        fn outline_print(&self) {
+            let output = self.to_string();
+            let len = output.len();
+            println!("{}", "*".repeat(len + 4));
+            println!("*{}*", " ".repeat(len + 2));
+            println!("* {} *", output);
+            println!("*{}*", " ".repeat(len + 2));
+            println!("{}", "*".repeat(len + 4));
+        }
+    }
+
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    impl OutlinePrint for Point {}
+    impl fmt::Display for Point {
+        fn fmt(&self, f: &mut fmt::Formatter)  -> fmt::Result {
+            write!(f, "({}, {})", self.x, self.y)
+        }
+    }
 }
 
 /// fully qualified syntax for disambiguation: calling methods with the same name
