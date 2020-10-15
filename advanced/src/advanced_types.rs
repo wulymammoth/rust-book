@@ -3,6 +3,7 @@ pub fn main() {
     newtype_for_type_safety_and_abstraction();
     the_never_type_that_never_returns();
     dynamically_sized_types_and_the_sized_trait();
+    println!("\n-- 19.4 advanced functions and closures\n");
     advanced_functions_and_closures();
 }
 
