@@ -3,6 +3,44 @@ pub fn main() {
     newtype_for_type_safety_and_abstraction();
     the_never_type_that_never_returns();
     dynamically_sized_types_and_the_sized_trait();
+    advanced_functions_and_closures();
+}
+
+fn advanced_functions_and_closures() {
+    println!("\n19.4 : function pointers\n");
+    fn add_one(x: i32) -> i32 {
+        x + 1
+    }
+
+    // `fn` is a type rather than a trait here
+    // - function pointers implement all three of the closure traits
+    //  1. Fn
+    //  2. FnMut
+    //  3. FnOnce
+    fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+        f(arg) + f(arg)
+    }
+
+    let answer = do_twice(add_one, 5);
+    println!("The answer is:{}", answer);
+
+    // NOTE: closures or function pointers?
+    // rule of thumb: external code, use function pointers, because C, for example, doesn't support
+    // closures
+
+    // EXAMPLE where we could use inline closure or named function
+    // - numbers to strings
+    let list_of_numbers = vec![1, 2, 3];
+    let _strings_from_closure: Vec<String> = list_of_numbers.iter().map(|i| i.to_string()).collect();
+    let _strings_from_named_fn: Vec<String> = list_of_numbers.iter().map(ToString::to_string).collect();
+
+    println!("\n19.4 : return closures\n");
+    // we can't just return closures because their size is not known until runtime but oursolution
+    // is a trait object
+    #[allow(dead_code)]
+    fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
+        Box::new(|x| x + 1)
+    }
 }
 
 /// NOTE: dynamically sized types AKA DSTs or "unsized types"
