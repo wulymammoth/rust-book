@@ -1,10 +1,11 @@
 pub fn main() {
-    println!("\n-- 19.4 advanced functions and closures\n");
     println!("\n-- 19.5 macros\n");
-    macro_rules();
+    declarative_macros();
+    procedural_macros();
 }
 
-fn macro_rules() {
+fn declarative_macros() {
+    println!("\n19.5 : declarative macros\n");
     // use of `macro_rules!` construct to define "declarative macros"
     // our implemention of the `vec!` macro
     #[macro_export] // this annotation indicates that this needs to be brought into scope to be used
@@ -22,4 +23,19 @@ fn macro_rules() {
             }
         };
     }
+}
+
+fn procedural_macros()  {
+    println!("\n19.5 : procedural macros\n");
+    println!("\nthere are 3 kinds of procedural macros: custom derive, attribute-like, function-like\n");
+
+    use hello_macro::HelloMacro;
+
+    struct Pancakes;
+
+    impl HelloMacro for Pancakes {
+        println!("Hello, Macro! My name is Pancakes!");
+    }
+
+    Pancakes::hello_macro();
 }
