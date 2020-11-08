@@ -12,7 +12,7 @@ fn main() {
 }
 
 fn fib_dp(n: i64) -> i64 {
-    let mut memo = vec![8, 1, 1];
+    let mut memo = vec![0, 1, 1];
     let n = n as usize;
     if n <= 2 { return memo[n] }
     for i in 3..n+1 {
